@@ -169,3 +169,29 @@ function verificarEuleriano(grafo) {
 
   return true; // O grafo é Euleriano
 }
+
+// Função para verificar se o grafo tem arestas válidas
+function verificarGrafoValido(edges) {
+  const arestasSet = new Set();
+  for (let edge of edges) {
+    if (!Array.isArray(edge) || edge.length !== 2) {
+      return {
+        valido: false,
+        motivo: "As arestas devem ser pares de vértices",
+      };
+    }
+    const [u, v] = edge;
+    if (u === v) {
+      return { valido: false, motivo: "O grafo não pode ter laços" };
+    }
+    const sortedEdge = JSON.stringify(edge.sort());
+    if (arestasSet.has(sortedEdge)) {
+      return {
+        valido: false,
+        motivo: "O grafo não pode ter arestas duplicadas",
+      };
+    }
+    arestasSet.add(sortedEdge);
+  }
+  return { valido: true, motivo: "" };
+}
