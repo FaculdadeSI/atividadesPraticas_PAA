@@ -1,3 +1,123 @@
+// Função principal para verificar propriedades do grafo
+function verificarGrafo() {
+  // Obtem as arestas do grafo A e, opcionalmente, do grafo B
+  const inputEdges = document.getElementById("edges").value;
+  const inputEdges2 = document.getElementById("edges2")?.value; // Segundo grafo opcional
+
+  // Converte as arestas da entrada de texto para formato de array
+  const edges = processarArestas(inputEdges);
+
+  // Obtem elementos da interface para exibir os resultados
+  const resultado = document.getElementById("detalhesResultado");
+  const listaResultados = document.getElementById("resultadosLista");
+  const grafoViz = document.getElementById("grafoViz");
+
+  listaResultados.innerHTML = ""; // Limpa resultados anteriores
+
+  // Caso a entrada de arestas seja inválida, exibe mensagem de erro
+  if (!edges) {
+    const erro = document.createElement("li");
+    erro.classList.add("erro");
+    erro.textContent =
+      "Entrada inválida. Por favor, forneça as arestas no formato correto (ex: [[1, 2], [1, 3]])";
+    listaResultados.appendChild(erro);
+    resultado.style.display = "block";
+    return;
+  }
+
+  // Cria o grafo a partir das arestas fornecidas
+  const grafoA = criarGrafo(edges);
+
+  // Calcula propriedades do grafo
+  const componentesConexos = contarComponentesConexos(grafoA);
+  const caminhoFechado = verificarCaminhoFechado(grafoA);
+  const grafoValido = verificarGrafoValido(edges);
+  const numeroDeVertices = new Set(edges.flat()).size;
+  const numeroDeArestas = edges.length;
+
+  // Gera detalhes para exibição
+  let detalhes = [
+    `Arestas fornecidas: ${JSON.stringify(edges)}`,
+    `Quantidade de componentes conexos: ${componentesConexos}`,
+    caminhoFechado
+      ? "O grafo contém um caminho fechado."
+      : "O grafo não contém caminhos fechados.",
+    grafoValido.valido
+      ? "O grafo é válido."
+      : `O grafo não é válido: ${grafoValido.motivo}`,
+    componentesConexos === 1 && numeroDeArestas === numeroDeVertices - 1
+      ? "O grafo é uma árvore."
+      : "O grafo não é uma árvore.",
+    verificarCompleto(grafoA)
+      ? "O grafo é completo."
+      : "O grafo não é completo.",
+    verificarBipartido(grafoA)
+      ? "O grafo é bipartido."
+      : "O grafo não é bipartido.",
+    verificarEuleriano(grafoA)
+      ? "O grafo é Euleriano."
+      : "O grafo não é Euleriano.",
+  ];
+
+  // Caso exista um segundo grafo, verifica isomorfismo entre os grafos
+  if (inputEdges2) {
+    const edges2 = processarArestas(inputEdges2);
+    if (edges2) {
+      const grafoB = criarGrafo(edges2);
+      const isomorfismo = verificarIsomorfismo(grafoA, grafoB);
+      detalhes.push(
+        isomorfismo
+          ? "Os grafos são isomorfos."
+          : "Os grafos não são isomorfos."
+      );
+    } else {
+      detalhes.push(
+        "Entrada inválida para o segundo grafo. Isomorfismo não verificado."
+      );
+    }
+  }
+
+  // Exibe os detalhes na interface
+  detalhes.forEach((detalhe) => {
+    const item = document.createElement("li");
+    item.textContent = detalhe;
+    listaResultados.appendChild(item);
+  });
+
+  // Exibe o painel de resultados
+  resultado.style.display = "block";
+
+  // Visualiza o grafo A com a biblioteca Vis.js
+  const nodes = new vis.DataSet();
+  const edgesVis = new vis.DataSet();
+
+  const vertices = new Set();
+  edges.forEach(([v1, v2]) => {
+    vertices.add(v1);
+    vertices.add(v2);
+  });
+
+  vertices.forEach((vertex) => {
+    nodes.add({ id: vertex, label: String(vertex) });
+  });
+
+  edges.forEach(([v1, v2]) => {
+    edgesVis.add({ from: v1, to: v2 });
+  });
+
+  const container = grafoViz;
+  const data = { nodes: nodes, edges: edgesVis };
+  const options = {
+    width: "100%",
+    height: "100%",
+    physics: {
+      enabled: true,
+    },
+  };
+
+  new vis.Network(container, data, options);
+}
+
 // Função para converter a entrada de texto em arestas
 function processarArestas(input) {
   try {
