@@ -64,3 +64,42 @@ function verificarCompleto(grafo) {
 
   return true;
 }
+
+// Função para verificar a presença de um caminho fechado (ciclo)
+function verificarCaminhoFechado(grafo) {
+  const visitado = new Set();
+  const recursaoVisitada = new Set();
+
+  for (const nodo in grafo) {
+    if (!visitado.has(Number(nodo))) {
+      if (detectaCiclo(grafo, Number(nodo), visitado, recursaoVisitada, null)) {
+        return true; // Se encontrar um ciclo, retorna true
+      }
+    }
+  }
+
+  return false; // Se não encontrar nenhum ciclo
+}
+
+// Função auxiliar para detectar ciclos na busca por profundidade
+function detectaCiclo(grafo, nodo, visitado, recursaoVisitada, pai) {
+  if (!grafo[nodo]) {
+    return false; // Se o nó não estiver no grafo, retorna false
+  }
+
+  visitado.add(nodo);
+  recursaoVisitada.add(nodo);
+
+  for (const vizinho of grafo[nodo]) {
+    if (!visitado.has(vizinho)) {
+      if (detectaCiclo(grafo, vizinho, visitado, recursaoVisitada, nodo)) {
+        return true; // Ciclo encontrado
+      }
+    } else if (vizinho !== pai && recursaoVisitada.has(vizinho)) {
+      return true; // Ciclo encontrado
+    }
+  }
+
+  recursaoVisitada.delete(nodo); // Remove o nó da recursão
+  return false; // Sem ciclo
+}
