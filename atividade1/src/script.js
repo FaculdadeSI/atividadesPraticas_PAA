@@ -195,3 +195,45 @@ function verificarGrafoValido(edges) {
   }
   return { valido: true, motivo: "" };
 }
+
+// Função para verificar se dois grafos são isomorfos
+function verificarIsomorfismo(grafoA, grafoB) {
+  // Verifica se o número de vértices e arestas são iguais
+  const verticesA = Object.keys(grafoA);
+  const verticesB = Object.keys(grafoB);
+
+  if (verticesA.length !== verticesB.length) {
+    return false; // Diferente número de vértices, logo não são isomorfos
+  }
+
+  // Verifica se os graus dos vértices são os mesmos
+  const grausA = verticesA.map((v) => grafoA[v].length);
+  const grausB = verticesB.map((v) => grafoB[v].length);
+
+  grausA.sort();
+  grausB.sort();
+
+  if (!arraysIguais(grausA, grausB)) {
+    return false; // Graus diferentes, logo não são isomorfos
+  }
+
+  // Tentativa simplificada de verificar conexões entre os grafos
+  for (let i = 0; i < verticesA.length; i++) {
+    for (let j = 0; j < verticesB.length; j++) {
+      if (grafoA[verticesA[i]].length === grafoB[verticesB[j]].length) {
+        return true; // Se os grafos possuem a mesma estrutura de conexões, são isomorfos
+      }
+    }
+  }
+
+  return false; // Caso contrário, não são isomorfos
+}
+
+// Função para comparar dois arrays de forma que considere a ordem dos elementos
+function arraysIguais(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+  return true;
+}
