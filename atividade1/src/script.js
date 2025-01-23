@@ -357,3 +357,16 @@ function arraysIguais(arr1, arr2) {
   }
   return true;
 }
+
+// Exporta funções para uso em outros scripts
+module.exports = {
+  processarArestas,
+  criarGrafo,
+  contarComponentesConexos,
+  verificarCaminhoFechado,
+  verificarEuleriano,
+  verificarCompleto,
+  verificarBipartido,
+  verificarGrafoValido,
+  verificarIsomorfismo,
+};
