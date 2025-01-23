@@ -258,22 +258,6 @@ function buscaProfundidadeBipartido(grafo, nodo, color, c) {
   return true; // Coloração válida
 }
 
-// Função para verificar a presença de um caminho fechado (ciclo)
-function verificarCaminhoFechado(grafo) {
-  const visitado = new Set();
-  const recursaoVisitada = new Set();
-
-  for (const nodo in grafo) {
-    if (!visitado.has(Number(nodo))) {
-      if (detectaCiclo(grafo, Number(nodo), visitado, recursaoVisitada, null)) {
-        return true; // Se encontrar um ciclo, retorna true
-      }
-    }
-  }
-
-  return false; // Se não encontrar nenhum ciclo
-}
-
 // Função para verificar se o grafo é Euleriano
 function verificarEuleriano(grafo) {
   const componentesConexos = contarComponentesConexos(grafo);
