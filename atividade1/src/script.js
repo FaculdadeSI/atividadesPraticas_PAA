@@ -103,3 +103,37 @@ function detectaCiclo(grafo, nodo, visitado, recursaoVisitada, pai) {
   recursaoVisitada.delete(nodo); // Remove o nó da recursão
   return false; // Sem ciclo
 }
+
+// Função para verificar se o grafo é bipartido
+function verificarBipartido(grafo) {
+  const color = {};
+  for (const nodo in grafo) {
+    if (!(nodo in color)) {
+      if (!buscaProfundidadeBipartido(grafo, nodo, color, 0)) {
+        return false; // Se não for possível colorir de forma bipartida, retorna false
+      }
+    }
+  }
+  return true; // O grafo é bipartido
+}
+
+// Função auxiliar para realizar busca por profundidade em busca de bipartição
+function buscaProfundidadeBipartido(grafo, nodo, color, c) {
+  if (!(nodo in grafo)) {
+    return true; // Se o nó não está no grafo, consideramos que não há conflito
+  }
+
+  if (nodo in color) {
+    return color[nodo] === c; // Verifica se a coloração do nó é correta
+  }
+
+  color[nodo] = c; // Colorir o nó
+
+  for (const vizinho of grafo[nodo]) {
+    if (!buscaProfundidadeBipartido(grafo, vizinho, color, 1 - c)) {
+      return false; // Se encontrar um conflito de cor, o grafo não é bipartido
+    }
+  }
+
+  return true; // Coloração válida
+}
