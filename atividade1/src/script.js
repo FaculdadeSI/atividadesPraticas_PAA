@@ -121,9 +121,24 @@ function verificarGrafo() {
 // Função para converter a entrada de texto em arestas
 function processarArestas(input) {
   try {
-    return JSON.parse(input); // Converte a entrada para formato de array
+    const parsed = JSON.parse(input);
+
+    // Verifica se o input é um array de pares de números
+    if (
+      Array.isArray(parsed) &&
+      parsed.every(
+        (aresta) =>
+          Array.isArray(aresta) &&
+          aresta.length === 2 &&
+          aresta.every((nodo) => Number.isInteger(nodo))
+      )
+    ) {
+      return parsed;
+    }
+
+    return null; // Retorna null para entradas inválidas
   } catch (e) {
-    return null; // Se ocorrer erro, retorna null
+    return null; // Retorna null para entradas não parseáveis
   }
 }
 
