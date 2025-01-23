@@ -153,3 +153,19 @@ function verificarCaminhoFechado(grafo) {
 
   return false; // Se não encontrar nenhum ciclo
 }
+
+// Função para verificar se o grafo é Euleriano
+function verificarEuleriano(grafo) {
+  const componentesConexos = contarComponentesConexos(grafo);
+  if (componentesConexos > 1) {
+    return false; // Se o grafo não for conexo, não é Euleriano
+  }
+
+  for (const nodo in grafo) {
+    if (grafo[nodo].length % 2 !== 0) {
+      return false; // Se algum vértice tiver grau ímpar, o grafo não é Euleriano
+    }
+  }
+
+  return true; // O grafo é Euleriano
+}
