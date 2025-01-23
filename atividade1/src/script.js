@@ -50,3 +50,17 @@ function buscaProfundidade(grafo, nodo, visitado) {
     }
   });
 }
+
+// Função para verificar se o grafo é completo
+function verificarCompleto(grafo) {
+  const vertices = Object.keys(grafo);
+  const n = vertices.length;
+
+  for (const vertice of vertices) {
+    if (grafo[vertice].length !== n - 1) {
+      return false; // Se algum vértice não estiver conectado a todos os outros, não é completo
+    }
+  }
+
+  return true;
+}
