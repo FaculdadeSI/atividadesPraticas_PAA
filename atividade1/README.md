@@ -1,7 +1,3 @@
-Claro, agora vou ajustar a parte das funções e adicionar instruções de como rodar o projeto, explicando as lógicas utilizadas nas verificações. Veja a versão atualizada abaixo:
-
----
-
 # Projeto de Análise de Grafos
 
 Este projeto tem como objetivo fornecer uma interface interativa para a análise de grafos, permitindo a inserção de arestas e a verificação de várias propriedades do grafo, como ciclos, eulerianismo, completude, bipartição, entre outros.
@@ -46,13 +42,13 @@ Além disso, o grafo pode ser visualizado de forma interativa utilizando a bibli
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/usuario/projeto-de-grafos.git
+   git clone https://github.com/FaculdadeSI/atividadesPraticas_PAA.git
    ```
 
 2. Navegue até a pasta do projeto:
 
    ```bash
-   cd projeto-de-grafos
+   cd atividadesPraticas_PAA/atividade1
    ```
 
 3. Instale as dependências necessárias:
